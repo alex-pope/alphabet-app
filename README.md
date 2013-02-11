@@ -1,2 +1,2 @@
-alphabet-app
+Android Alphabet App
 ============
