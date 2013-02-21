@@ -1,5 +1,8 @@
 Android Alphabet App
 ============
+
+![ScreenShot](https://github.com/https://raw.github.com/alex-pope/alphabet-app/master/screen-shot.png)
+
 An Android app that teaches children their ABCs by saying the letter that the child presses.
 
 
