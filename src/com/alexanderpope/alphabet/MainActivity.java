@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
@@ -21,10 +22,12 @@ public class MainActivity extends Activity {
 	static final int lettersCount = 26;
 	static final int numbersCount = 10;
 	static final int buttonsCount = lettersCount + numbersCount;
-
-	static MediaPlayer[] mediaPlayer = new MediaPlayer[buttonsCount];
+	
+	static SoundPool soundPool	= new SoundPool(buttonsCount, AudioManager.STREAM_MUSIC, 0);
+	static int[] soundIDs = new int[buttonsCount];
+	
 	static int[] imageResources = new int[buttonsCount];
-
+	
 	static Integer btnClickedTag = 0;
 
 	@Override
@@ -43,8 +46,9 @@ public class MainActivity extends Activity {
 			audioResName = String.format("%c", btn + 'a');
 			audioResId = resources.getIdentifier(audioResName, "raw",
 					packageName);
-			mediaPlayer[btn] = MediaPlayer.create(context, audioResId);
-
+			
+			soundIDs[btn] = soundPool.load(context, audioResId, 1);
+			
 			imageResName = String.format("ic_action_%c", btn + 'a');
 			imageResources[btn] = resources.getIdentifier(imageResName,
 					"drawable", packageName);
@@ -60,8 +64,8 @@ public class MainActivity extends Activity {
 			audioResName = String.format("a%02d", btn);
 			audioResId = resources.getIdentifier(audioResName, "raw",
 					packageName);
-			mediaPlayer[numbersOffset + btn] = MediaPlayer.create(context,
-					audioResId);
+			
+			soundIDs[numbersOffset + btn] = soundPool.load(context, audioResId, 1);
 
 			imageResName = String.format("ic_action_%02d", btn);
 			imageResources[numbersOffset + btn] = resources.getIdentifier(
@@ -72,7 +76,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				btnClickedTag = (Integer) v.getTag();
-				mediaPlayer[btnClickedTag].start();
+				soundPool.play(soundIDs[btnClickedTag], 1f, 1f, 1, 0, 1f);
 			}
 		};
 
@@ -107,7 +111,7 @@ public class MainActivity extends Activity {
 			mainLinearLayout.addView(row);
 		}
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
